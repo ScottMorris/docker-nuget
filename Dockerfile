@@ -1,10 +1,20 @@
-FROM nginx
+FROM nginx:1.11.1
 MAINTAINER Markus Mayer <awesome@wundercart.de>
 
 ENV APP_BASE /var/www
 ENV APP_BRANCH master
 ENV DEBIAN_VERSION jessie
-ENV HHVM_VERSION 3.18.1~$DEBIAN_VERSION
+ENV HHVM_VERSION 3.22.0~$DEBIAN_VERSION
+
+RUN set -ex; \
+	if ! command -v gpg > /dev/null; then \
+		apt-get update; \
+		apt-get install -y --no-install-recommends \
+			gnupg2 \
+			dirmngr \
+		; \
+		rm -rf /var/lib/apt/lists/*; \
+	fi
 
 # Install HHVM, Supervisor and PHP DBO connectors
 RUN apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0x5a16e7281be7a449 && \
