@@ -48,10 +48,21 @@ RUN chmod +x /tmp/*.sh
 # The base URL
 ENV BASE_URL /
 
-# Set randomly generated API key
+# Set randomly generated private API key
 RUN echo $(date +%s | sha256sum | base64 | head -c 32; echo) > $APP_BASE/.api-key && \
     echo "Auto-Generated NuGet API key: $(cat $APP_BASE/.api-key)" && \
     sed -i $APP_BASE/inc/config.php -e "s/ChangeThisKey/$(cat $APP_BASE/.api-key)/"
+
+# Set randomly generated public API key
+RUN echo $(date +%s | sha256sum | base64 | head -c 32; echo) > $APP_BASE/.api-key-public && \
+    echo "Auto-Generated NuGet API key: $(cat $APP_BASE/.api-key-public)" && \
+    sed -i $APP_BASE/inc/config.php -e "s/ChangeThisPublicKey/$(cat $APP_BASE/.api-key-public)/"
+
+# Set public API key requirement
+RUN echo false > $APP_BASE/.api-key-required && \
+    echo "Added default requirment for public key needed: $(cat $APP_BASE/.api-key-required)" 
+    #&& \
+    #sed -i $APP_BASE/inc/config.php -e "s/ChangeThisPublicKey/$(cat $APP_BASE/.api-key-required)/"
 
 # Define the volumes
 VOLUME ["$APP_BASE/db", "$APP_BASE/packagefiles"]
