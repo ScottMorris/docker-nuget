@@ -17,7 +17,15 @@ docker run --detach=true \
            --name nuget-server \
            sunside/simple-nuget-server
 ```
-
+### Additional options
+To set a public API key for any read operation include,
+```
+--env NUGET_PUBLIC_API_KEY=<your public secret>
+```
+To enable the requirement and use of a public API key include,
+```
+--env NUGET_USE_PUBLIC_API_KEY=true
+```
 ## Building the image
 
 To build the image named `simple-nuget-server`, execute the following command:
