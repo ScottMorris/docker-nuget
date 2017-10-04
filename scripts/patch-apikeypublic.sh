@@ -2,7 +2,7 @@
 
 GENERATED_API_KEY=$(cat $APP_BASE/.api-key-public)
 
-if [ -n ${NUGET_PUBLIC_API_KEY} ]
+if [ -z ${NUGET_PUBLIC_API_KEY+false} ]
 then
 	echo "Using generated API key: $GENERATED_API_KEY"
 else
